@@ -21,19 +21,6 @@ public class Application {
        return sum;
     }
 
-    private static int sum(String[] input){
-        int sum=0;
-        for(String eachNum : input)
-        {
-            sum += Integer.parseInt(eachNum.trim());
-        }
-        return sum;
-    }
-
-    private static String[] split(String input, String pattern){
-        return Pattern.compile(pattern).split(input);
-    }
-
     private static int[] parseAndValidate(String input){
         if (input == null) {
             throw new IllegalArgumentException("input is null");
@@ -57,7 +44,7 @@ public class Application {
                 throw new IllegalArgumentException("no numbers after delimiter");
             }
         } else {
-            numbers = input; // 기본 구분자 사용
+            numbers = input;
         }
         
         String[] tokens = Pattern.compile(pattern).split(numbers);
@@ -82,16 +69,6 @@ public class Application {
         return vals;
     }
 
-
-    private static class deli {
-        final String input;
-        final String delipattern;
-
-        deli(String input, String delipattern) {
-            this.input = input;
-            this.delipattern = delipattern;
-        }
-    }
 }
 
 
