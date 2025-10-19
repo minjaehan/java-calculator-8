@@ -37,6 +37,7 @@ public class Application {
             String delim = input.substring(2, nl);
             pattern = Pattern.quote(delim);
             numbers = input.substring(nl + 1);
+
             if (numbers.trim().isEmpty()) {
                 return new int[0];
             }
@@ -47,20 +48,25 @@ public class Application {
         String[] tokens = Pattern.compile(pattern).split(numbers);
 
         int[] vals = new int[tokens.length];
+
         for (int i = 0; i < tokens.length; i++) {
             String t = tokens[i].trim();
+
             if (t.isEmpty()) {
                 throw new IllegalArgumentException("the input is empty");
             }
+
             int v;
             try {
                 v = Integer.parseInt(t);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("the input is not a number");
             }
+
             if (v < 0) {
                 throw new IllegalArgumentException("negative numbers are not allowed");
             }
+
             vals[i] = v;
         }
         return vals;
