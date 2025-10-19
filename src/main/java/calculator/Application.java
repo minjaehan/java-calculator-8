@@ -28,12 +28,10 @@ public class Application {
             line = line + "\n" + next;
         }
 
-        try {
             int result = calculation(line);
-            System.out.println("결과 : " + result);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
+            System.out.println("결과 :  " + result);
+
+
     }
 
     public static int calculation(String input) {
