@@ -13,18 +13,12 @@ public class Application {
     }
 
     public static int calculation(String input) {
-        if (input == null) {
-            return 0;
-        }
-        deli info = parsing(input);
-        if(info.input == null){
-            return 0;
-        }
-        String[] numbers= split(info.input,info.delipattern);
-
-       validation(numbers);
-
-       return sum(numbers);
+       int[] nums = parseAndValidate(input);
+       int sum = 0;
+       for(int n : nums){
+           sum += n;
+       }
+       return sum;
     }
 
     private static int sum(String[] input){
@@ -40,39 +34,54 @@ public class Application {
         return Pattern.compile(pattern).split(input);
     }
 
-    private static void validation(String[] input){
-        for(String eachNum : input){
-            String num = eachNum.trim();
-            if(num.isEmpty()){
-                throw new IllegalArgumentException("the input is empty");
-            }
-            int value;
-            try{
-                value = Integer.parseInt(num);
-            } catch(NumberFormatException e){
-                throw new IllegalArgumentException("the input is not a number");
-            }
-            if(value <0)
-            {
-                throw new IllegalArgumentException("negative numbers are not allowed");
-            }
+    private static int[] parseAndValidate(String input){
+        if (input == null) {
+            throw new IllegalArgumentException("input is null");
         }
-    }
+        if (input.trim().isEmpty()) {
+            throw new IllegalArgumentException("input is empty");
+        }
 
-    public static deli parsing(String input) {
-        String defaultPattern = "[,:]";
+        String numbers;
+        String pattern = "[,:]";
 
         if (input.startsWith("//")) {
             int nl = input.indexOf('\n');
-            if (nl > 2) {
-                String delim = input.substring(2, nl);
-                String pattern = Pattern.quote(delim);
-                String number = input.substring(nl + 1);
-                return new deli(number, pattern);
+            if (nl <= 2) {
+                throw new IllegalArgumentException("invalid custom delimiter header");
             }
+            String delim = input.substring(2, nl);
+            pattern = Pattern.quote(delim);
+            numbers = input.substring(nl + 1);
+            if (numbers.trim().isEmpty()) {
+                throw new IllegalArgumentException("no numbers after delimiter");
+            }
+        } else {
+            numbers = input; // 기본 구분자 사용
         }
-        return new deli(input, defaultPattern);
+        
+        String[] tokens = Pattern.compile(pattern).split(numbers);
+
+        int[] vals = new int[tokens.length];
+        for (int i = 0; i < tokens.length; i++) {
+            String t = tokens[i].trim();
+            if (t.isEmpty()) {
+                throw new IllegalArgumentException("the input is empty");
+            }
+            int v;
+            try {
+                v = Integer.parseInt(t);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("the input is not a number");
+            }
+            if (v < 0) {
+                throw new IllegalArgumentException("negative numbers are not allowed");
+            }
+            vals[i] = v;
+        }
+        return vals;
     }
+
 
     private static class deli {
         final String input;
