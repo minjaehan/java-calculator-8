@@ -19,18 +19,25 @@ public class Application {
             return 0;
         }
 
-        deli info = parse(input);
+        deli info = parsing(input);
         if(info.input == null){
             return 0;
         }
         String[] numbers= split(info.input,info.delipattern);
 
+       validation(numbers);
+
+       return sum(numbers);
+
+    }
+
+    private static int sum(String[] input){
         int sum=0;
-        for(int i=0;i<numbers.length;i++){
-            sum+=Integer.parseInt(numbers[i]);
+        for(String eachNum : input)
+        {
+            sum += Integer.parseInt(eachNum.trim());
         }
         return sum;
-
     }
 
 
@@ -39,7 +46,29 @@ public class Application {
 
     }
 
-    public static deli parse(String input) {
+    private static void validation(String[] input){
+        for(String eachNum : input){
+            String num = eachNum.trim();
+            if(num.isEmpty()){
+                throw new IllegalArgumentException("the input is empty");
+            }
+            int value;
+            try{
+                value = Integer.parseInt(num);
+            } catch(NumberFormatException e){
+                throw new IllegalArgumentException("the input is not a number");
+            }
+            if(value <0)
+            {
+                throw new IllegalArgumentException("the input is not a negative number");
+            }
+
+
+
+        }
+    }
+
+    public static deli parsing(String input) {
         String defaultPattern = "[,:]";
 
         if (input.startsWith("//")
