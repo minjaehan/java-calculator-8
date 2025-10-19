@@ -10,15 +10,12 @@ public class Application {
         String input = Console.readLine();
         int result = calculation(input);
         System.out.println(result);
-
-
     }
 
     public static int calculation(String input) {
         if (input == null) {
             return 0;
         }
-
         deli info = parsing(input);
         if(info.input == null){
             return 0;
@@ -28,7 +25,6 @@ public class Application {
        validation(numbers);
 
        return sum(numbers);
-
     }
 
     private static int sum(String[] input){
@@ -40,10 +36,8 @@ public class Application {
         return sum;
     }
 
-
     private static String[] split(String input, String pattern){
         return Pattern.compile(pattern).split(input);
-
     }
 
     private static void validation(String[] input){
@@ -60,31 +54,26 @@ public class Application {
             }
             if(value <0)
             {
-                throw new IllegalArgumentException("the input is not a negative number");
+                throw new IllegalArgumentException("negative numbers are not allowed");
             }
-
-
-
         }
     }
 
     public static deli parsing(String input) {
         String defaultPattern = "[,:]";
 
-        if (input.startsWith("//")
-                && input.length() >= 5
-                && input.charAt(3) == '\\'
-                && input.charAt(4) == 'n') {
-            char custom = input.charAt(2);
-            String pattern = Pattern.quote(String.valueOf(custom));
-            String number = input.substring(5);
-            return new deli(number, pattern);
+        if (input.startsWith("//")) {
+            int nl = input.indexOf('\n');
+            if (nl > 2) {
+                String delim = input.substring(2, nl);
+                String pattern = Pattern.quote(delim);
+                String number = input.substring(nl + 1);
+                return new deli(number, pattern);
+            }
         }
-
         return new deli(input, defaultPattern);
     }
 
-    //구분자 정보 클래스
     private static class deli {
         final String input;
         final String delipattern;
@@ -94,7 +83,6 @@ public class Application {
             this.delipattern = delipattern;
         }
     }
-
 }
 
 
