@@ -21,11 +21,9 @@ public class Application {
     }
 
     private static int[] parseAndValidate(String input){
-        if (input == null) {
-            throw new IllegalArgumentException("input is null");
-        }
-        if (input.trim().isEmpty()) {
-            throw new IllegalArgumentException("input is empty");
+
+        if (input == null || input.trim().isEmpty()) {
+            return new int[0];
         }
 
         String numbers;
@@ -40,12 +38,12 @@ public class Application {
             pattern = Pattern.quote(delim);
             numbers = input.substring(nl + 1);
             if (numbers.trim().isEmpty()) {
-                throw new IllegalArgumentException("no numbers after delimiter");
+                return new int[0];
             }
         } else {
             numbers = input;
         }
-        
+
         String[] tokens = Pattern.compile(pattern).split(numbers);
 
         int[] vals = new int[tokens.length];
