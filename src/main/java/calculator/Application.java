@@ -7,17 +7,16 @@ import java.util.regex.Pattern;
 
 public class Application {
     public static void main(String[] args) {
+        System.out.println("덧셈할 문자열을 입력해 주세요.");
         String input = Console.readLine();
         int result = calculation(input);
-        System.out.println(result);
+        System.out.println("결과 : " + result);
     }
 
     public static int calculation(String input) {
        int[] nums = parseAndValidate(input);
        int sum = 0;
-       for(int n : nums){
-           sum += n;
-       }
+       for(int n : nums) sum += n;
        return sum;
     }
 
